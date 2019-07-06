@@ -35,12 +35,8 @@ namespace Example.Bar.Api
 
             services.ConfigureProtected<ConnectionStrings>(Configuration.GetSection(nameof(ConnectionStrings)));
 
-            services.AddTransient<IDataProtectionProvider>(s =>
-                DataProtectionProvider.Create(new DirectoryInfo(Constants.KeysLocation))
-                );
-
             services
-                .AddDataProtection()
+                .AddDataProtection(options => { options.ApplicationDiscriminator = "app"; })
                 .PersistKeysToFileSystem(new DirectoryInfo(Constants.KeysLocation));
         }
 

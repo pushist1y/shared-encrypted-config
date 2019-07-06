@@ -32,12 +32,8 @@ namespace Example.Foo.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureProtected<ConnectionStrings>(Configuration.GetSection(nameof(ConnectionStrings)));
 
-            services.AddTransient<IDataProtectionProvider>(s =>
-                DataProtectionProvider.Create(new DirectoryInfo(Constants.KeysLocation))
-            );
-
             services
-                .AddDataProtection()
+                .AddDataProtection(options => { options.ApplicationDiscriminator = "app"; })
                 .PersistKeysToFileSystem(new DirectoryInfo(Example.Common.Constants.KeysLocation));
         }
 
